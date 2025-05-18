@@ -27,8 +27,8 @@ This repository contains two powerful scripts designed for wireless security tes
 
 This repository includes:
 
-1. **`wifiacttack.sh`**: A Bash script that automates WiFi penetration testing tasks including dependency checks, wordlist creation, monitor mode activation, network scanning, and WPA handshake capture.
-2. **`bluen.py`**: A Python script for performing Bluetooth Low Energy (BLE) operations such as scanning devices, enumerating characteristics, writing data, and simulating BLE advertisements.
+1. **`wifipen`**: A Bash script that automates WiFi penetration testing tasks including dependency checks, wordlist creation, monitor mode activation, network scanning, and WPA handshake capture.
+2. **`blue.py`**: A Python script for performing Bluetooth Low Energy (BLE) operations such as scanning devices, enumerating characteristics, writing data, and simulating BLE advertisements.
 
 These tools are intended to be used on Kali Linux running on Raspberry Pi 4 for an integrated IoT penetration testing setup.
 
@@ -85,7 +85,7 @@ These tools are intended to be used on Kali Linux running on Raspberry Pi 4 for 
 
 ---
 
-## WiFi Attack Script (`wifiacttack.sh`)
+## WiFi Attack Script (`wifipen`)
 
 This script automates WiFi penetration testing workflows, allowing users to conduct network reconnaissance, handshake capturing, and password cracking with ease.
 
@@ -120,7 +120,7 @@ This script is for **educational and authorized use only**. Unauthorized use of 
 
 ---
 
-## BLE Tool (`bluen.py`)
+## BLE Tool (`blue.py`)
 
 This Python-based tool provides a command-line interface for interacting with Bluetooth Low Energy (BLE) devices.
 
@@ -129,7 +129,6 @@ This Python-based tool provides a command-line interface for interacting with Bl
 * 📡 **Device Scanning**: Discover nearby BLE devices.
 * 🔍 **Characteristic Enumeration**: Inspect services and characteristics.
 * ✍️ **Data Writing**: Send custom data to writable characteristics.
-* 📢 **Advertising Mode**: Broadcast as a BLE peripheral device.
 
 ### Usage
 
@@ -141,29 +140,9 @@ source venv/bin/activate
 
 Then, run commands such as:
 
-* **Scan for BLE devices**
-
-  ```bash
-  python bluen.py scan
-  ```
-
-* **Enumerate characteristics**
-
-  ```bash
-  python bluen.py enum <MAC_ADDRESS>
-  ```
-
-* **Write data**
-
-  ```bash
-  python bluen.py write <MAC_ADDRESS> <CHAR_UUID> <HEXDATA>
-  ```
-
-* **Advertise BLE signal**
-
-  ```bash
-  python bluen.py advertise <MAC_ADDRESS> <SERVICE_UUID>
-  ```
+```bash
+python3 blue.py
+```
 
 ### Disclaimer
 
