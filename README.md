@@ -8,13 +8,13 @@ This repository contains two powerful scripts designed for wireless security tes
 
 * [Overview](#overview)
 * [Installation on Raspberry Pi 4](#installation-on-raspberry-pi-4)
-* [WiFi Attack Script (`wifiacttack.sh`)](#wifi-attack-script-wifiacttacksh)
+* [WiFi Attack Script (`wifipen`)](#wifi-attack-script-wifipen)
 
   * [Features](#features)
   * [Usage](#usage)
   * [Prerequisites](#prerequisites)
   * [Disclaimer](#disclaimer)
-* [BLE Tool (`bluen.py`)](#ble-tool-bluenpy)
+* [BLE Tool (`blue.py`)](#ble-tool-bluepy)
 
   * [Features](#features-1)
   * [Usage](#usage-1)
