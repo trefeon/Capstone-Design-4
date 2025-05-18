@@ -6,7 +6,7 @@ YELLOW="\e[33m"
 NC="\e[0m"
 capture_dir="captures"
 tmp_prefix="scan_tmp"
-log_file="betterui.log"
+log_file="wifipen.log"
 
 script_dir="$(pwd)"
 
@@ -68,12 +68,22 @@ create_wordlist() {
 }
 
 select_wordlist() {
-    echo -n "Enter full path to your wordlist file (default: ./rockyou.txt): "; read input_path
-    wordlist_path="${input_path:-$script_dir/rockyou.txt}"
-    [[ ! -f "$wordlist_path" ]] && {
+    local default_wordlist="/usr/share/wordlists/rockyou.txt"
+
+    echo -n "Enter full path to your wordlist file (default: $default_wordlist): "
+    read input_path
+
+    if [[ -z "$input_path" ]]; then
+        wordlist_path="$default_wordlist"
+    else
+        wordlist_path="$input_path"
+    fi
+
+    if [[ ! -f "$wordlist_path" ]]; then
         echo -e "${RED}[!] Wordlist not found at $wordlist_path${NC}" | tee -a "$log_file"
         exit 1
-    }
+    fi
+
     echo -e "${GREEN}[+] Using wordlist: $wordlist_path${NC}" | tee -a "$log_file"
 }
 
@@ -175,7 +185,7 @@ scan_networks() {
 main_menu() {
     while true; do
         echo
-        echo "==== WIFI ACTTACK MENU ===="
+        echo "==== WIFIPEN MENU ===="
         echo "1) Check Dependencies"
         echo "2) Create Wordlist"
         echo "3) Select Wordlist"
@@ -183,7 +193,7 @@ main_menu() {
         echo "5) Enable Monitor Mode"
         echo "6) Scan & Capture Handshake"
         echo "7) Exit"
-        echo "==========================="
+        echo "========================"
         echo -n "Select: "; read opt
         case $opt in
             1) check_dependencies ;;
