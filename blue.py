@@ -1,6 +1,5 @@
 import asyncio
 from bleak import BleakScanner, BleakClient, BleakError
-import sys
 
 # Optional: warna output
 try:
@@ -13,10 +12,8 @@ except ImportError:
 
 async def scan_devices():
     print(f"{Fore.YELLOW}[*] Scanning for BLE devices (5 seconds)...{Style.RESET_ALL}")
-
     def detection_callback(device, adv_data):
         print(f"{Fore.GREEN}{device.address} | RSSI: {adv_data.rssi} | Name: {device.name or 'Unknown'}{Style.RESET_ALL}")
-
     try:
         scanner = BleakScanner(detection_callback)
         await scanner.start()
@@ -52,7 +49,7 @@ async def enumerate_characteristics(mac_address, retries=3, timeout=10):
                             print(f"    - Char: {char.uuid} | Props: {props}")
                     return
             except asyncio.TimeoutError:
-                print(f"{Fore.RED}[!] Timeout error on attempt {attempt}. Retrying...{Style.RESET_ALL}")
+                print(f"{Fore.RED}[!] Timeout on attempt {attempt}. Retrying...{Style.RESET_ALL}")
                 await asyncio.sleep(2)
             except BleakError as e:
                 print(f"{Fore.RED}[!] BLE Error: {e}{Style.RESET_ALL}")
@@ -60,7 +57,6 @@ async def enumerate_characteristics(mac_address, retries=3, timeout=10):
             except Exception as e:
                 print(f"{Fore.RED}[!] Unexpected error: {e}{Style.RESET_ALL}")
                 return
-
         print(f"{Fore.RED}[!] Failed to connect after {retries} attempts.{Style.RESET_ALL}")
     except Exception as e:
         print(f"{Fore.RED}[!] Unexpected error: {e}{Style.RESET_ALL}")
@@ -86,28 +82,35 @@ async def write_to_characteristic(mac_address, uuid, hex_data):
     except Exception as e:
         print(f"{Fore.RED}[!] Unexpected error: {e}{Style.RESET_ALL}")
 
-def usage():
-    print("Usage:")
-    print("  python ble_tool.py scan")
-    print("  python ble_tool.py enum <MAC_ADDRESS>")
-    print("  python ble_tool.py write <MAC_ADDRESS> <CHAR_UUID> <HEXDATA>")
+async def main_menu():
+    while True:
+        print("\n=== BLE Tool Menu ===")
+        print("1. Scan BLE devices")
+        print("2. Enumerate characteristics")
+        print("3. Write to characteristic")
+        print("4. Exit")
+
+        choice = input("Select an option (1-4): ").strip()
+
+        if choice == '1':
+            await scan_devices()
+        elif choice == '2':
+            mac = input("Enter MAC address of the device: ").strip()
+            await enumerate_characteristics(mac)
+        elif choice == '3':
+            mac = input("Enter MAC address of the device: ").strip()
+            uuid = input("Enter characteristic UUID: ").strip()
+            hexdata = input("Enter hex data to write (e.g., 0A0B0C): ").strip()
+            await write_to_characteristic(mac, uuid, hexdata)
+        elif choice == '4':
+            print("Exiting.")
+            break
+        else:
+            print("Invalid choice. Please enter a number from 1 to 4.")
 
 if __name__ == "__main__":
-    if len(sys.argv) < 2:
-        usage()
-        sys.exit(1)
-
-    command = sys.argv[1]
-
     try:
-        if command == "scan":
-            asyncio.run(scan_devices())
-        elif command == "enum" and len(sys.argv) == 3:
-            asyncio.run(enumerate_characteristics(sys.argv[2]))
-        elif command == "write" and len(sys.argv) == 5:
-            asyncio.run(write_to_characteristic(sys.argv[2], sys.argv[3], sys.argv[4]))
-        else:
-            usage()
+        asyncio.run(main_menu())
     except KeyboardInterrupt:
         print(f"\n{Fore.RED}[!] Interrupted by user{Style.RESET_ALL}")
     except Exception as e:
