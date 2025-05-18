@@ -6,19 +6,20 @@ This repository contains two powerful scripts designed for wireless security tes
 
 ## Table of Contents
 
-- [Capstone Design 4: WiFi and BLE Tools](#capstone-design-4-wifi-and-ble-tools)
-  - [Table of Contents](#table-of-contents)
-  - [Overview](#overview)
-  - [WiFi Attack Script (`wifiacttack.sh`)](#wifi-attack-script-wifiacttacksh)
-    - [Features](#features)
-    - [Usage](#usage)
-    - [Prerequisites](#prerequisites)
-    - [Disclaimer](#disclaimer)
-  - [BLE Tool (`bluen.py`)](#ble-tool-bluenpy)
-    - [Features](#features-1)
-    - [Usage](#usage-1)
-    - [Disclaimer](#disclaimer-1)
-  - [License](#license)
+* [Overview](#overview)
+* [Installation on Raspberry Pi 4](#installation-on-raspberry-pi-4)
+* [WiFi Attack Script (`wifipen`)](#wifi-attack-script-wifipen)
+
+  * [Features](#features)
+  * [Usage](#usage)
+  * [Prerequisites](#prerequisites)
+  * [Disclaimer](#disclaimer)
+* [BLE Tool (`blue.py`)](#ble-tool-bluepy)
+
+  * [Features](#features-1)
+  * [Usage](#usage-1)
+  * [Disclaimer](#disclaimer-1)
+* [License](#license)
 
 ---
 
@@ -26,98 +27,133 @@ This repository contains two powerful scripts designed for wireless security tes
 
 This repository includes:
 
-1. **`wifiacttack.sh`**: A Bash script for automating WiFi penetration testing tasks such as dependency checks, wordlist creation, monitor mode activation, network scanning, and WPA handshake capture.
-2. **`bluen.py`**: A Python script for Bluetooth Low Energy (BLE) operations, including device scanning, characteristic enumeration, data writing, and BLE signal advertising.
+1. **`wifipen`**: A Bash script that automates WiFi penetration testing tasks including dependency checks, wordlist creation, monitor mode activation, network scanning, and WPA handshake capture.
+2. **`blue.py`**: A Python script for performing Bluetooth Low Energy (BLE) operations such as scanning devices, enumerating characteristics, writing data, and simulating BLE advertisements.
 
-Both scripts are designed for advanced users with knowledge of wireless security and BLE protocols.
+These tools are intended to be used on Kali Linux running on Raspberry Pi 4 for an integrated IoT penetration testing setup.
 
 ---
 
-## WiFi Attack Script (`wifiacttack.sh`)
+## Installation on Raspberry Pi 4
 
-This script automates various WiFi penetration testing tasks, making it easier to perform network reconnaissance and WPA handshake cracking.
+1. **Download Kali Linux ARM64**
+   Get the official Kali Linux image for Raspberry Pi 4:
+   👉 [https://www.kali.org/get-kali/#kali-arm](https://www.kali.org/get-kali/#kali-arm)
+
+2. **Flash to microSD Card**
+   Use tools like **Raspberry Pi Imager** or **balenaEtcher** to flash the image to a microSD card.
+
+3. **Boot Kali on Raspberry Pi 4**
+   Insert the flashed card into the Raspberry Pi, power it on, and complete initial setup.
+
+4. **Update the System**
+   Open a terminal and run:
+
+   ```bash
+   sudo apt update && sudo apt upgrade -y
+   ```
+
+5. **Clone the Repository**
+
+   ```bash
+   git clone https://github.com/trefeon/Capstone-Design-4.git
+   cd Capstone-Design-4
+   ```
+
+6. **Create and Activate Python Virtual Environment**
+
+   ```bash
+   python3 -m venv venv
+   source venv/bin/activate
+   ```
+
+7. **Install Python Dependencies**
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+8. **Install System Dependencies**
+   Run the WiFi setup script:
+
+   ```bash
+   chmod +x wifipen
+   ./wifipen
+   ```
+
+   Choose **option 1** to automatically install all required system tools.
+
+---
+
+## WiFi Attack Script (`wifipen`)
+
+This script automates WiFi penetration testing workflows, allowing users to conduct network reconnaissance, handshake capturing, and password cracking with ease.
 
 ### Features
 
-- **Dependency Check**: Ensures all required tools are installed.
-- **Custom Wordlist Creation**: Generates wordlists using `crunch` with user-defined patterns.
-- **Monitor Mode Activation**: Enables monitor mode on a wireless interface.
-- **Network Scanning**: Scans for nearby WiFi networks and displays available access points.
-- **Handshake Capture**: Captures WPA handshakes and attempts to crack them using a wordlist.
-- **Deauthentication Attack**: Sends deauthentication packets to force reconnections, aiding in handshake capture.
+* ✅ **Dependency Check**: Verifies required tools are installed.
+* 🔤 **Wordlist Generation**: Uses `crunch` to create custom dictionaries.
+* 📡 **Monitor Mode**: Activates monitor mode on supported wireless interfaces.
+* 🌐 **Network Scanning**: Lists nearby WiFi access points.
+* 🤝 **Handshake Capture**: Captures WPA handshakes for cracking.
+* 🔥 **Deauthentication Attack**: Forces clients to reconnect to trigger handshakes.
 
 ### Usage
 
-1. Clone the repository and navigate to the script directory.
-2. Make the script executable:
-   ```bash
-   chmod +x wifiacttack.sh
-   ```
-3. Run the script:
-   ```bash
-   ./wifiacttack.sh
-   ```
-4. Follow the menu options to perform desired tasks.
+```bash
+chmod +x wifiacttack.sh
+./wifiacttack.sh
+```
+
+Follow the on-screen menu options to execute desired tasks.
 
 ### Prerequisites
 
-The script requires the following tools to be installed:
-- `airmon-ng`, `airodump-ng`, `aireplay-ng`, `iw`
-- `crunch`, `hcxpcapngtool`, `wpapcap2john`, `john`
+Make sure the following tools are installed (auto-installed by `wifipen`):
 
-The script can install missing dependencies on Debian-based systems.
+* `airmon-ng`, `airodump-ng`, `aireplay-ng`, `iw`
+* `crunch`, `hcxpcapngtool`, `wpapcap2john`, `john`
 
 ### Disclaimer
 
-This script is intended for **educational purposes** and **authorized security testing** only. Unauthorized use is illegal and unethical.
+This script is for **educational and authorized use only**. Unauthorized use of these tools is strictly prohibited and may violate laws and ethical standards.
 
 ---
 
-## BLE Tool (`bluen.py`)
+## BLE Tool (`blue.py`)
 
-This Python script provides tools for Bluetooth Low Energy (BLE) operations, enabling users to interact with BLE devices for scanning, characteristic enumeration, data writing, and signal advertising.
+This Python-based tool provides a command-line interface for interacting with Bluetooth Low Energy (BLE) devices.
 
 ### Features
 
-- **Device Scanning**: Scans for nearby BLE devices and displays their details.
-- **Characteristic Enumeration**: Lists services and characteristics of a BLE device.
-- **Data Writing**: Writes data to a specific BLE characteristic.
-- **BLE Advertising**: Simulates a BLE device by advertising a signal.
+* 📡 **Device Scanning**: Discover nearby BLE devices.
+* 🔍 **Characteristic Enumeration**: Inspect services and characteristics.
+* ✍️ **Data Writing**: Send custom data to writable characteristics.
 
 ### Usage
 
-1. Install dependencies:
-   ```bash
-   pip install bleak
-   ```
-2. Run the script with the following commands:
-   - **Scan for devices**:
-     ```bash
-     python bluen.py scan
-     ```
-   - **Enumerate characteristics**:
-     ```bash
-     python bluen.py enum <MAC_ADDRESS>
-     ```
-   - **Write to a characteristic**:
-     ```bash
-     python bluen.py write <MAC_ADDRESS> <CHAR_UUID> <HEXDATA>
-     ```
-   - **Advertise a BLE signal**:
-     ```bash
-     python bluen.py advertise <MAC_ADDRESS> <SERVICE_UUID>
-     ```
+Activate your virtual environment first:
+
+```bash
+source venv/bin/activate
+```
+
+Then, run commands such as:
+
+```bash
+python3 blue.py
+```
 
 ### Disclaimer
 
-This script is intended for **educational purposes** and **authorized security testing** only. Unauthorized use is illegal and unethical.
+This script is intended solely for **educational** and **authorized** testing purposes. Unauthorized usage is illegal.
 
 ---
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for full details.
 
 ---
 
-**Note**: Ensure you have proper authorization before using these tools in any environment. Misuse of these tools is illegal and unethical.
+> ⚠️ **Note**: Always ensure you have permission before testing any network or device. These tools are meant to aid in education and responsible security auditing only.
