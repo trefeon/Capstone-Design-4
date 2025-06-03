@@ -1,5 +1,12 @@
 #!/bin/bash
 
+# Use custom John the Ripper Jumbo if available
+CUSTOM_JOHN_DIR="$HOME/john-jumbo/run"
+if [[ -d "$CUSTOM_JOHN_DIR" ]]; then
+    export PATH="$CUSTOM_JOHN_DIR:$PATH"
+    echo "[*] Using custom John the Ripper from $CUSTOM_JOHN_DIR"
+fi
+
 GREEN="\e[32m"
 RED="\e[31m"
 YELLOW="\e[33m"
@@ -427,7 +434,13 @@ scan_networks() {
             john --show "$JOHN_FILE"
             return
         else
-            echo -e "${RED}[!] wpapcap2john not found. Skipping direct John test.${NC}"
+            echo -e "${RED}[!] wpapcap2john not found. Attempting fallback...${NC}"
+            if [[ -f "$CUSTOM_JOHN_DIR/wpapcap2john" ]]; then
+                "$CUSTOM_JOHN_DIR/wpapcap2john" "$capfile" > "$JOHN_FILE"
+            else
+                echo -e "${RED}[!] wpapcap2john not available. Cannot proceed.${NC}"
+                return
+            fi
         fi
     fi
 }
